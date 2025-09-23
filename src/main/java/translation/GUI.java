@@ -1,6 +1,7 @@
 package translation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 
@@ -12,55 +13,59 @@ import java.awt.event.*;
 public class GUI {
 
     public static void main(String[] args) {
+        Translator translator = new JSONTranslator();
+        CountryCodeConverter countryCodeConverter = new CountryCodeConverter();
+        LanguageCodeConverter languageCodeConverter = new LanguageCodeConverter();
+
         SwingUtilities.invokeLater(() -> {
-            JPanel countryPanel = new JPanel();
-            JTextField countryField = new JTextField(10);
-            countryField.setText("can");
-            countryField.setEditable(false); // we only support the "can" country code for now
-            countryPanel.add(new JLabel("Country:"));
-            countryPanel.add(countryField);
 
             JPanel languagePanel = new JPanel();
-            JTextField languageField = new JTextField(10);
+            JComboBox<String> languageCombo = new JComboBox<>(translator.getLanguageCodes().toArray(new String[0]));
             languagePanel.add(new JLabel("Language:"));
-            languagePanel.add(languageField);
+            languagePanel.add(languageCombo);
 
-            JPanel buttonPanel = new JPanel();
-            JButton submit = new JButton("Submit");
-            buttonPanel.add(submit);
+            JPanel countryPanel = new JPanel();
+            JList<String> countryList = new JList<>(translator.getCountryCodes().toArray(new String[0]));
+            JScrollPane listScroller = new JScrollPane(countryList);
+            listScroller.setPreferredSize(new Dimension(250, 80));
+            countryPanel.add(new JLabel("Country:"));
+            countryPanel.add(listScroller);
 
+            JPanel translationPanel = new JPanel();
             JLabel resultLabelText = new JLabel("Translation:");
-            buttonPanel.add(resultLabelText);
+            translationPanel.add(resultLabelText);
             JLabel resultLabel = new JLabel("\t\t\t\t\t\t\t");
-            buttonPanel.add(resultLabel);
+            translationPanel.add(resultLabel);
 
+            // add JList listener
+            countryList.addListSelectionListener(e -> {
+                if (!e.getValueIsAdjusting()) {
+                    String languageSelected = (String) languageCombo.getSelectedItem();
+                    String countrySelected = (String) countryList.getSelectedValue();
 
-            // adding listener for when the user clicks the submit button
-            submit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String language = languageField.getText();
-                    String country = countryField.getText();
-
-                    // for now, just using our simple translator, but
-                    // we'll need to use the real JSON version later.
-                    Translator translator = new CanadaTranslator();
-
-                    String result = translator.translate(country, language);
-                    if (result == null) {
-                        result = "no translation found!";
+                    if (languageSelected != null && countrySelected != null) {
+                        String translatedText = translator.translate(countrySelected, languageSelected);
+                        resultLabelText.setText("Translation: " + translatedText);
                     }
-                    resultLabel.setText(result);
-
                 }
+            });
 
+            // add ComboBox listener
+            languageCombo.addActionListener(e -> {
+                String languageSelected = (String) languageCombo.getSelectedItem();
+                String countrySelected = (String) countryList.getSelectedValue();
+
+                if (languageSelected != null && countrySelected != null) {
+                    String translatedText = translator.translate(countrySelected, languageSelected);
+                    resultLabelText.setText("Translation: " + translatedText);
+                }
             });
 
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-            mainPanel.add(countryPanel);
             mainPanel.add(languagePanel);
-            mainPanel.add(buttonPanel);
+            mainPanel.add(translationPanel);
+            mainPanel.add(countryPanel);
 
             JFrame frame = new JFrame("Country Name Translator");
             frame.setContentPane(mainPanel);
