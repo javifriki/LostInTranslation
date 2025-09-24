@@ -1,74 +1,86 @@
 package translation;
-
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
-
-// TODO Task D: Update the GUI for the program to align with UI shown in the README example.
-//            Currently, the program only uses the CanadaTranslator and the user has
-//            to manually enter the language code they want to use for the translation.
-//            See the examples package for some code snippets that may be useful when updating
-//            the GUI.
 public class GUI {
 
     public static void main(String[] args) {
+        Translator translator = new JSONTranslator();
+        CountryCodeConverter countryCodeConverter = new CountryCodeConverter();
+        LanguageCodeConverter languageCodeConverter = new LanguageCodeConverter();
+
         SwingUtilities.invokeLater(() -> {
-            JPanel countryPanel = new JPanel();
-            JTextField countryField = new JTextField(10);
-            countryField.setText("can");
-            countryField.setEditable(false); // we only support the "can" country code for now
-            countryPanel.add(new JLabel("Country:"));
-            countryPanel.add(countryField);
 
+            // Convert codes -> names for languages
+            List<String> languageNames = translator.getLanguageCodes().stream()
+                    .map(languageCodeConverter::fromLanguageCode)
+                    .collect(Collectors.toList());
+
+            // Language selection panel (shows full names now)
             JPanel languagePanel = new JPanel();
-            JTextField languageField = new JTextField(10);
+            JComboBox<String> languageCombo = new JComboBox<>(languageNames.toArray(new String[0]));
             languagePanel.add(new JLabel("Language:"));
-            languagePanel.add(languageField);
+            languagePanel.add(languageCombo);
 
-            JPanel buttonPanel = new JPanel();
-            JButton submit = new JButton("Submit");
-            buttonPanel.add(submit);
+            // Convert codes -> names for countries
+            List<String> countryNames = translator.getCountryCodes().stream()
+                    .map(countryCodeConverter::fromCountryCode)
+                    .collect(Collectors.toList());
 
-            JLabel resultLabelText = new JLabel("Translation:");
-            buttonPanel.add(resultLabelText);
-            JLabel resultLabel = new JLabel("\t\t\t\t\t\t\t");
-            buttonPanel.add(resultLabel);
+            // Country selection panel (shows full names now)
+            JPanel countryPanel = new JPanel();
+            JList<String> countryList = new JList<>(countryNames.toArray(new String[0]));
+            JScrollPane listScroller = new JScrollPane(countryList);
+            listScroller.setPreferredSize(new Dimension(250, 80));
+            countryPanel.add(new JLabel("Country:"));
+            countryPanel.add(listScroller);
 
+            // Translation result panel
+            JPanel translationPanel = new JPanel();
+            JLabel resultLabel = new JLabel("Translation: ");
+            translationPanel.add(resultLabel);
 
-            // adding listener for when the user clicks the submit button
-            submit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String language = languageField.getText();
-                    String country = countryField.getText();
+            // Listener for country selection
+            countryList.addListSelectionListener(e -> {
+                if (!e.getValueIsAdjusting()) {
+                    String languageNameSelected = (String) languageCombo.getSelectedItem();
+                    String countryNameSelected = countryList.getSelectedValue();
 
-                    // for now, just using our simple translator, but
-                    // we'll need to use the real JSON version later.
-                    Translator translator = new CanadaTranslator();
-
-                    String result = translator.translate(country, language);
-                    if (result == null) {
-                        result = "no translation found!";
+                    if (languageNameSelected != null && countryNameSelected != null) {
+                        String languageCode = languageCodeConverter.fromLanguage(languageNameSelected);
+                        String countryCode = countryCodeConverter.fromCountry(countryNameSelected);
+                        String translatedText = translator.translate(countryCode, languageCode);
+                        resultLabel.setText("Translation: " + translatedText);
                     }
-                    resultLabel.setText(result);
-
                 }
+            });
 
+            // Listener for language selection
+            languageCombo.addActionListener(e -> {
+                String languageNameSelected = (String) languageCombo.getSelectedItem();
+                String countryNameSelected = countryList.getSelectedValue();
+
+                if (languageNameSelected != null && countryNameSelected != null) {
+                    String languageCode = languageCodeConverter.fromLanguage(languageNameSelected);
+                    String countryCode = countryCodeConverter.fromCountry(countryNameSelected);
+                    String translatedText = translator.translate(countryCode, languageCode);
+                    resultLabel.setText("Translation: " + translatedText);
+                }
             });
 
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-            mainPanel.add(countryPanel);
             mainPanel.add(languagePanel);
-            mainPanel.add(buttonPanel);
+            mainPanel.add(translationPanel);
+            mainPanel.add(countryPanel);
 
             JFrame frame = new JFrame("Country Name Translator");
             frame.setContentPane(mainPanel);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setVisible(true);
-
-
         });
     }
 }

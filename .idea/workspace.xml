@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b896a8-4dda-4937-93bb-d25f6100c96d" name="Changes" comment="JSONTranslator completed" />
+    <list default="true" id="36b896a8-4dda-4937-93bb-d25f6100c96d" name="Changes" comment="JSONTranslator completed">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/translation/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/translation/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/translation/CanadaTranslator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/translation/CanadaTranslator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/translation/CountryCodeConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/translation/CountryCodeConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/translation/CountryCodeConverterTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/translation/CountryCodeConverterTest.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,12 +30,12 @@
     &quot;assignee&quot;: &quot;BobbyLee531&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/javifriki/LostInTranslation.git&quot;,
-    &quot;accountId&quot;: &quot;2d5a3d30-63a4-4e44-ac0b-079a8b6d8ac8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/javifriki/LostInTranslation.git",
+    "accountId": "29daa8f9-b715-4a0d-bce1-bcc6ca9e04b4"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -52,14 +58,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "JSONTranslator",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.JSONTranslatorTest">
+  <component name="RunManager">
     <configuration name="GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-17" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -167,7 +173,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
       </set>
     </attachedChunks>
   </component>
@@ -200,7 +206,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/translation/CountryCodeConverterTest.java</url>
           <line>9</line>
-          <properties class="translation.CountryCodeConverterTest">
+          <properties class="translation.CountryCodeConverterTest" method="fromCountryCodeUSA">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
