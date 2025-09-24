@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class provides the services of: <br/>
@@ -42,10 +39,9 @@ public class LanguageCodeConverter {
             iterator.next(); // skip the first line
             while (iterator.hasNext()) {
                 String line = iterator.next().trim();
-                if (line.isEmpty()) continue; // skip blank lines
 
-                String[] parts = line.split("\t|,"); // split by tab OR comma
-                if (parts.length < 2) continue;
+
+                String[] parts = line.split("\t"); // split by tab OR comma
 
                 String language = parts[0].trim();
                 String code = parts[1].trim();
